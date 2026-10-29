@@ -1,0 +1,11 @@
+{
+  "latex-workshop.latex.recipe.default": "first",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "[latex]": {
+    "editor.wordWrap": "on"
+  },
+  "[bibtex]": {
+    "editor.wordWrap": "on"
+  }
+}

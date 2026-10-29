@@ -1,0 +1,233 @@
+% !TEX root = ../anexos.tex
+\apendice{Especificación de Requisitos}
+
+\section{Introducción}
+
+Este apéndice recoge los requisitos del sistema, que se derivan de los objetivos del proyecto. Primero se enumeran los objetivos, después se recoge el catálogo de requisitos funcionales y no funcionales y, por último, se describen los casos de uso mediante tablas.
+
+El usuario final es la única persona que interactúa con el sistema, a través de la aplicación web. Internamente, el sistema está formado por la aplicación web con un cliente que conecta con un modelo de lenguaje, y un servidor MCP que expone las herramientas de consulta y predicción del tráfico.
+
+\section{Objetivos generales}
+
+Este proyecto persigue construir una aplicación web que permita consultar, en lenguaje natural, el estado y la predicción del tráfico en distintas ciudades de España, apoyándose en modelos de redes neuronales de grafos (\textit{Graph Neural Networks}, GNN) y en el protocolo \textit{Model Context Protocol} (MCP) como capa de comunicación entre un modelo de lenguaje y los datos y modelos del sistema. A continuación se detallan los objetivos, agrupados por tipo.
+
+\subsection{Objetivo general}
+
+Desarrollar un sistema de apoyo a la movilidad urbana que responda a preguntas sobre el tráfico de ciudades españolas mediante una interfaz web, utilizando un modelo de predicción basado en GNN expuesto a través de un servidor MCP.
+
+\subsection{Objetivos del software}
+
+\begin{itemize}
+  \item Permitir al usuario formular preguntas en lenguaje natural sobre el estado actual del tráfico en una ciudad y franja horaria concretas.
+  \item Ofrecer predicciones de tráfico a corto plazo, indicando el horizonte temporal de la predicción.
+  \item Presentar las respuestas de forma comprensible, indicando la ciudad, el momento y el nivel de congestión estimado.
+  \item Soportar varias ciudades españolas, de modo que añadir una nueva no requiera modificar la lógica de la aplicación.
+  \item Proteger los datos de la universidad: los datos originales permanecerán en el entorno donde se alojan.
+\end{itemize}
+
+\subsection{Objetivos técnicos}
+
+\begin{itemize}
+  \item Estudiar el estado del arte de MCP, de las redes LSTM y de las GNN aplicadas a la predicción de tráfico.
+  \item Analizar, limpiar y preparar los datos de tráfico proporcionados por la universidad, definiendo la estructura de grafo (sensores y conexiones viarias) necesaria para las GNN.
+  \item Implementar un modelo de referencia basado en LSTM y un modelo basado en GNN, y compararlos mediante métricas de error de predicción.
+  \item Diseñar e implementar un servidor MCP en Python que exponga herramientas de consulta del estado del tráfico y de predicción, integrando los modelos entrenados.
+  \item Desarrollar una aplicación web con un cliente MCP que conecte un modelo de lenguaje con el servidor, de forma que sea este quien decida qué herramienta invocar.
+  \item Evaluar el sistema completo, tanto la calidad de las predicciones como el comportamiento de las respuestas a preguntas representativas de los usuarios.
+\end{itemize}
+
+\subsection{Objetivos de gestión y documentación}
+
+\begin{itemize}
+  \item Aplicar una metodología ágil con iteraciones (\textit{sprints}) de dos semanas, con objetivos revisados al final de cada una.
+  \item Mantener el trabajo documentado y versionado en un repositorio de GitHub, con \textit{issues} y \textit{milestones} asociados a cada iteración.
+  \item Elaborar la memoria del proyecto de forma continua durante el desarrollo, recogiendo las decisiones de diseño y los resultados.
+\end{itemize}
+
+\section{Catálogo de requisitos}
+
+Los requisitos se identifican con el prefijo RF (funcionales) o RNF (no funcionales). La importancia puede ser alta, media o baja.
+
+\subsection{Requisitos funcionales}
+
+\tablaSmallSinColores{Requisitos funcionales}{l p{9cm} l}{rf}
+{Id & Descripción & Importancia \\}
+{
+RF-1 & El sistema permitirá al usuario formular preguntas en lenguaje natural sobre el tráfico. & Alta \\
+RF-2 & El sistema permitirá consultar las ciudades para las que hay datos de tráfico disponibles. & Media \\
+RF-3 & El sistema permitirá consultar el estado del tráfico de una ciudad en una hora concreta, indicando la velocidad media y el nivel de congestión. & Alta \\
+RF-4 & El sistema permitirá consultar la predicción del tráfico de una ciudad a corto plazo, indicando el horizonte de la predicción. & Alta \\
+RF-5 & El sistema presentará las respuestas indicando la ciudad, el momento al que se refieren y el nivel de congestión estimado. & Alta \\
+RF-6 & El sistema permitirá consultar información de la red viaria de una ciudad, como el número de sensores y los vecinos de un sensor. & Media \\
+RF-7 & El sistema informará al usuario cuando falten datos o no sean válidos, y se los solicitará cuando proceda. & Media \\
+RF-8 & El sistema mantendrá el contexto de la conversación para atender preguntas de seguimiento. & Media \\
+}
+
+\subsection{Requisitos no funcionales}
+
+\tablaSmallSinColores{Requisitos no funcionales}{l p{9cm} l}{rnf}
+{Id & Descripción & Importancia \\}
+{
+RNF-1 & Privacidad: los datos originales de la universidad permanecerán en su entorno. & Alta \\
+RNF-2 & Fiabilidad: las respuestas se basarán exclusivamente en los resultados de las herramientas del servidor, sin inventar datos. & Alta \\
+RNF-3 & Extensibilidad: añadir una nueva ciudad no requerirá modificar la lógica de la aplicación. & Media \\
+RNF-4 & Usabilidad: las respuestas serán en español y comprensibles para usuarios sin conocimientos técnicos. & Media \\
+RNF-5 & Mantenibilidad: el servidor MCP, los modelos y la aplicación web estarán separados, y el código estará versionado y documentado en GitHub. & Media \\
+RNF-6 & Portabilidad: el sistema podrá ejecutarse en local con Python y las dependencias indicadas en el repositorio. & Baja \\
+}
+
+\section{Especificación de requisitos}
+
+Los requisitos funcionales se concretan en los siguientes casos de uso, cuyo actor es el usuario de la aplicación web.
+
+% Caso de Uso 1 -> Consultar las ciudades disponibles.
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-1}    & \textbf{Consultar las ciudades disponibles}\\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & Sergio Buil Laliena \\
+		\textbf{Requisitos asociados} & RF-2 \\
+		\textbf{Descripción}          & El usuario consulta para qué ciudades hay datos de tráfico disponibles. \\
+		\textbf{Precondición}         & El servidor MCP está en ejecución y la aplicación puede conectarse a él. \\
+		\textbf{Acciones}             &
+		\begin{enumerate}
+			\def\labelenumi{\arabic{enumi}.}
+			\tightlist
+			\item El usuario pide ver las ciudades disponibles.
+			\item El modelo de lenguaje selecciona la herramienta de listado de ciudades.
+			\item El servidor MCP devuelve la lista de ciudades.
+			\item La aplicación muestra la lista al usuario.
+		\end{enumerate}\\
+		\textbf{Postcondición}        & El usuario conoce las ciudades sobre las que puede consultar. \\
+		\textbf{Excepciones}          & Si el servidor no está disponible, se informa al usuario del error. \\
+		\textbf{Importancia}          & Media \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-1 Consultar las ciudades disponibles.}
+	\label{tabla:cu1}
+\end{table}
+
+% Caso de Uso 2 -> Consultar el estado del tráfico.
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-2}    & \textbf{Consultar el estado del tráfico}\\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & Sergio Buil Laliena \\
+		\textbf{Requisitos asociados} & RF-1, RF-3, RF-5, RF-7 \\
+		\textbf{Descripción}          & El usuario pregunta por el estado del tráfico de una ciudad en una hora concreta. \\
+		\textbf{Precondición}         & El servidor MCP está en ejecución y la ciudad consultada dispone de datos. \\
+		\textbf{Acciones}             &
+		\begin{enumerate}
+			\def\labelenumi{\arabic{enumi}.}
+			\tightlist
+			\item El usuario escribe una pregunta en lenguaje natural indicando la ciudad y la hora.
+			\item El modelo de lenguaje interpreta la pregunta y selecciona la herramienta de estado del tráfico.
+			\item El servidor MCP devuelve la velocidad media, el nivel de congestión y los sensores más lentos.
+			\item El modelo de lenguaje redacta la respuesta a partir de esos resultados.
+			\item La aplicación muestra la respuesta al usuario.
+		\end{enumerate}\\
+		\textbf{Postcondición}        & El usuario conoce el estado del tráfico de la ciudad a la hora consultada. \\
+		\textbf{Excepciones}          & Si falta la ciudad o la hora, se las solicita al usuario. Si la ciudad no está disponible o la hora no es válida, se informa del error y, cuando procede, de las opciones válidas. \\
+		\textbf{Importancia}          & Alta \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-2 Consultar el estado del tráfico.}
+	\label{tabla:cu2}
+\end{table}
+
+% Caso de Uso 3 -> Consultar la predicción del tráfico.
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-3}    & \textbf{Consultar la predicción del tráfico}\\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & Sergio Buil Laliena \\
+		\textbf{Requisitos asociados} & RF-1, RF-4, RF-5, RF-7 \\
+		\textbf{Descripción}          & El usuario pregunta por la predicción del tráfico de una ciudad a corto plazo. \\
+		\textbf{Precondición}         & El servidor MCP está en ejecución y la ciudad consultada dispone de un modelo de predicción. \\
+		\textbf{Acciones}             &
+		\begin{enumerate}
+			\def\labelenumi{\arabic{enumi}.}
+			\tightlist
+			\item El usuario escribe una pregunta en lenguaje natural indicando la ciudad, la hora y el horizonte de la predicción.
+			\item El modelo de lenguaje interpreta la pregunta y selecciona la herramienta de predicción.
+			\item El servidor MCP ejecuta el modelo y devuelve el estado de tráfico previsto.
+			\item El modelo de lenguaje redacta la respuesta indicando el momento al que se refiere la predicción.
+			\item La aplicación muestra la respuesta al usuario.
+		\end{enumerate}\\
+		\textbf{Postcondición}        & El usuario conoce la previsión de tráfico de la ciudad para el momento consultado. \\
+		\textbf{Excepciones}          & Si falta algún dato, se solicita al usuario. Si la ciudad no está disponible o el horizonte no es válido, se informa del error. \\
+		\textbf{Importancia}          & Alta \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-3 Consultar la predicción del tráfico.}
+	\label{tabla:cu3}
+\end{table}
+
+% Caso de Uso 4 -> Consultar la red viaria de una ciudad.
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-4}    & \textbf{Consultar la red viaria de una ciudad}\\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & Sergio Buil Laliena \\
+		\textbf{Requisitos asociados} & RF-6 \\
+		\textbf{Descripción}          & El usuario consulta información sobre la red de sensores de una ciudad, como su tamaño o los vecinos de un sensor. \\
+		\textbf{Precondición}         & El servidor MCP está en ejecución y la ciudad consultada dispone de datos. \\
+		\textbf{Acciones}             &
+		\begin{enumerate}
+			\def\labelenumi{\arabic{enumi}.}
+			\tightlist
+			\item El usuario pregunta por la red de sensores de una ciudad o por los vecinos de un sensor.
+			\item El modelo de lenguaje selecciona la herramienta correspondiente.
+			\item El servidor MCP devuelve el resumen del grafo o la lista de sensores vecinos.
+			\item La aplicación muestra la respuesta al usuario.
+		\end{enumerate}\\
+		\textbf{Postcondición}        & El usuario conoce la estructura de la red viaria consultada. \\
+		\textbf{Excepciones}          & Si la ciudad o el sensor no existen, se informa del error. \\
+		\textbf{Importancia}          & Media \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-4 Consultar la red viaria de una ciudad.}
+	\label{tabla:cu4}
+\end{table}
+
+% Caso de Uso 5 -> Realizar una consulta de seguimiento.
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-5}    & \textbf{Realizar una consulta de seguimiento}\\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & Sergio Buil Laliena \\
+		\textbf{Requisitos asociados} & RF-1, RF-8 \\
+		\textbf{Descripción}          & El usuario formula una pregunta que depende del contexto de una consulta anterior, por ejemplo cambiar la hora. \\
+		\textbf{Precondición}         & Existe al menos una consulta previa en la conversación. \\
+		\textbf{Acciones}             &
+		\begin{enumerate}
+			\def\labelenumi{\arabic{enumi}.}
+			\tightlist
+			\item El usuario escribe una pregunta que omite datos ya indicados antes.
+			\item El modelo de lenguaje completa la ciudad y los demás datos con el contexto de la conversación.
+			\item El modelo de lenguaje selecciona la herramienta adecuada y el servidor MCP devuelve el resultado.
+			\item La aplicación muestra la respuesta al usuario.
+		\end{enumerate}\\
+		\textbf{Postcondición}        & El usuario obtiene la respuesta a su pregunta sin repetir los datos anteriores. \\
+		\textbf{Excepciones}          & Si el contexto no es suficiente para completar la pregunta, se pide una aclaración al usuario. \\
+		\textbf{Importancia}          & Media \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-5 Realizar una consulta de seguimiento.}
+	\label{tabla:cu5}
+\end{table}

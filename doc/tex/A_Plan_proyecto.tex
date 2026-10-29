@@ -1,0 +1,157 @@
+\apendice{Plan de Proyecto Software}
+
+\section{Introducción}
+
+
+Este apéndice recoge cómo se ha planificado y organizado el proyecto, y analiza su viabilidad legal. El trabajo se desarrolla siguiendo una metodología ágil, dividiendo el tiempo disponible en iteraciones (\textit{sprints}) de dos semanas. Al inicio de cada una se fijan sus objetivos y al final se revisa lo conseguido, junto con el tutor, para ajustar el plan de la siguiente.
+
+Para el seguimiento se ha utilizado un repositorio de GitHub, donde cada tarea se registra como una \textit{issue}. La planificación que se presenta es la inicial: puede haber diferencias entre ella y el desarrollo real, que se comentan en el capítulo de aspectos relevantes del desarrollo.
+
+\section{Planificación temporal}
+
+El proyecto comenzó el 16 de octubre de 2026, día de la primera reunión con el tutor, a partir de la cual se inició la lectura de artículos y el estudio previo correspondientes al primer sprint. Durante ese primer sprint la dedicación fue mayor. A partir del segundo, debido a la realización de prácticas en empresa con jornada de 8:00 a 14:00, la dedicación prevista se reduce a unas 15 horas semanales (2 horas de lunes a miércoles, 5 horas los jueves y 4 horas los viernes), es decir, unas 30 horas por sprint.
+
+La fecha límite de entrega es el 1 de junio de 2027, lo que supone 33 semanas organizadas en dieciséis sprints de dos semanas y una última semana de cierre. Con esa dedicación se dispone de unas 430 horas entre los sprints S2 y S16. La planificación deja de forma deliberada margen al final para absorber retrasos, posibles cambios propuestos por el tutor y, si no son necesarios, ampliaciones del proyecto. La figura~\ref{fig:gantt} muestra el diagrama de Gantt.
+
+\begin{figure}[!ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{ganttchart}[
+  hgrid, vgrid={*{1}{draw=none},dotted},
+  x unit=0.42cm, y unit title=0.55cm, y unit chart=0.62cm,
+  title height=1, bar height=0.55,
+  bar/.append style={fill=blue!45},
+  milestone/.append style={fill=red!70}
+]{1}{33}
+\gantttitle{Oct}{3} \gantttitle{Nov}{4} \gantttitle{Dic}{4} \gantttitle{Ene}{5}
+\gantttitle{Feb}{4} \gantttitle{Mar}{4} \gantttitle{Abr}{5} \gantttitle{May}{4} \\
+\gantttitlelist{1,...,33}{1} \\
+\ganttbar{Estudio: MCP, LSTM, GNN}{1}{4} \\
+\ganttbar{Prototipo MCP y cliente LLM}{3}{4} \\
+\ganttbar{Datos UBU: an\'alisis y limpieza}{4}{8} \\
+\ganttbar{Baseline LSTM y m\'etricas}{7}{10} \\
+\ganttbar{Modelo GNN y comparaci\'on}{11}{16} \\
+\ganttbar{Servidor MCP con modelos}{17}{20} \\
+\ganttbar{Web app + cliente LLM}{19}{24} \\
+\ganttbar{Evaluaci\'on y pruebas}{23}{26} \\
+\ganttbar{Cambios del tutor y ampliaciones}{27}{28} \\
+\ganttbar{Memoria y anexos (continuo)}{1}{32} \\
+\ganttbar{Redacci\'on final y revisi\'on}{29}{32} \\
+\ganttmilestone{Revisi\'on baseline (tutor)}{10} \\
+\ganttmilestone{Revisi\'on GNN (tutor)}{16} \\
+\ganttmilestone{Demo funcional}{24} \\
+\ganttmilestone{Borrador de memoria al tutor}{28} \\
+\ganttmilestone{Entrega (1 jun 2027)}{33}
+\end{ganttchart}}
+\caption{Diagrama de Gantt revisado (33 semanas desde el 16 de octubre, sprints de dos semanas, unas 15 horas semanales desde el sprint 2).}
+\label{fig:gantt}
+\end{figure}
+
+La tabla~\ref{tabla:sprints} resume los objetivos y las horas disponibles de cada sprint. Las horas de los sprints S4, S6 y S12 son menores por festivos, vacaciones de Navidad y Semana Santa; los festivos considerados son aproximados.
+
+\begin{longtable}{l l r p{7cm}}
+
+\caption{Sprints del proyecto, horas disponibles y objetivos principales}
+\label{tabla:sprints}\\
+
+\toprule
+Sprint & Fechas & Horas & Objetivos \\
+\midrule
+\endfirsthead
+
+\toprule
+Sprint & Fechas & Horas & Objetivos \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{%
+    \small\textit{Continúa en la página siguiente}%
+} \\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+S1 & 16--29 oct & 30 &
+Estudio inicial de MCP, LSTM y GNN. \\
+
+S2 & 30 oct--12 nov & 30 &
+Prototipo de servidor MCP y cliente con modelo de lenguaje. \\
+
+S3 & 13--26 nov & 30 &
+Análisis y limpieza de los datos de la universidad. \\
+
+S4 & 27 nov--10 dic & 28 &
+Definición del grafo de sensores e inicio del modelo. \\
+
+S5 & 11--24 dic & 30 &
+Modelo base LSTM y métricas de evaluación. \\
+
+S6 & 25 dic--7 ene & 20 &
+Primera versión del modelo GNN, teniendo en cuenta la menor disponibilidad navideña. \\
+
+S7 & 8--21 ene & 30 &
+Desarrollo y entrenamiento del modelo GNN. \\
+
+S8 & 22 ene--4 feb & 30 &
+Ajuste del modelo GNN y comparación con el modelo base. \\
+
+S9 & 5--18 feb & 30 &
+Integración de los modelos entrenados en el servidor MCP. \\
+
+S10 & 19 feb--4 mar & 30 &
+Finalización del servidor MCP e inicio de la aplicación web. \\
+
+S11 & 5--18 mar & 30 &
+Desarrollo de la aplicación web y del cliente con modelo de lenguaje. \\
+
+S12 & 19 mar--1 abr & 21 &
+Finalización de la aplicación web. \\
+
+S13 & 2--15 abr & 30 &
+Evaluación y pruebas del sistema completo. \\
+
+S14 & 16--29 abr & 30 &
+Cambios propuestos por el tutor y posibles ampliaciones. \\
+
+S15 & 30 abr--13 may & 30 &
+Redacción final de la memoria y los anexos. \\
+
+S16 & 14--27 may & 30 &
+Correcciones del tutor, revisión final y preparación de la entrega. \\
+
+Cierre & 28 may--1 jun & 8 &
+Entrega del proyecto. \\
+
+\end{longtable}
+
+La memoria y los anexos se redactan de forma continua durante todos los sprints, y no solo al final.
+
+\subsection{Revisión de la planificación}
+
+La planificación inicial preveía finalizar a finales de enero de 2027 con una dedicación de unas 40 horas semanales. Al incorporarse la realización de prácticas en empresa y reducirse la dedicación a unas 15 horas semanales, se decidió entregar en la convocatoria de junio de 2027 y se rehízo el plan, dejando margen para los cambios que pueda proponer el tutor. Las fechas definitivas dependerán de la convocatoria de entrega.
+
+\section{Estudio de viabilidad}
+
+
+\subsection{Viabilidad legal}
+
+\subsubsection*{Datos}
+
+El proyecto se basa en datos de movilidad urbana proporcionados por la Universidad de Burgos.
+
+\subsubsection*{Licencias del software}
+
+El proyecto se apoya en software de terceros, cuyas licencias deben permitir su uso en este contexto. La tabla~\ref{tabla:licencias} recoge las que se han comprobado hasta el momento.
+
+\tablaSmall{Licencias del software utilizado}{l l}{licencias}
+{Software & Licencia \\}
+{
+SDK de Python de MCP & MIT \\
+\textbf{(resto de librerías)} & \textbf{a completar al elegirlas} \\
+}
+
+\subsubsection*{Servicios de terceros y licencia del proyecto}
+
+El uso de un modelo de lenguaje a través de una API implica aceptar los términos de servicio del proveedor, que deben revisarse antes de enviarle información. Por último, queda por decidir la licencia con la que se publicará el código del proyecto en GitHub; una opción habitual en proyectos académicos es una licencia permisiva como MIT.

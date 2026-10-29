@@ -1,0 +1,18 @@
+# ---------- LaTeX: ficheros generados ----------
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# ---------- Editor / sistema ----------
+.DS_Store
+Thumbs.db

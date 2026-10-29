@@ -1,0 +1,37 @@
+% !TEX root = ../memoria.tex
+\capitulo{2}{Objetivos del proyecto}
+
+Este proyecto persigue construir una aplicación web que permita consultar, en lenguaje natural, el estado y la predicción del tráfico en distintas ciudades de España, apoyándose en modelos de redes neuronales de grafos (\textit{Graph Neural Networks}, GNN) y en el protocolo \textit{Model Context Protocol} (MCP) como capa de comunicación entre un modelo de lenguaje y los datos y modelos del sistema. A continuación se detallan los objetivos, distinguiendo entre el general, los derivados de los requisitos del software y los de carácter técnico.
+
+\section{Objetivo general}
+
+Desarrollar un sistema de apoyo a la movilidad urbana que responda a preguntas sobre el tráfico de ciudades españolas mediante una interfaz web, utilizando un modelo de predicción basado en GNN expuesto a través de un servidor MCP.
+
+\section{Objetivos del software}
+
+\begin{itemize}
+  \item Permitir al usuario formular preguntas en lenguaje natural sobre el estado actual del tráfico en una ciudad y franja horaria concretas.
+  \item Ofrecer predicciones de tráfico a corto plazo, indicando el horizonte temporal de la predicción.
+  \item Presentar las respuestas de forma comprensible, indicando la ciudad, el momento y el nivel de congestión estimado.
+  \item Soportar varias ciudades españolas, de modo que añadir una nueva no requiera modificar la lógica de la aplicación.
+  \item Proteger los datos de la universidad: los datos originales permanecerán en el entorno donde se alojan y el modelo de lenguaje solo recibirá resultados agregados.
+\end{itemize}
+
+\section{Objetivos técnicos}
+
+\begin{itemize}
+  \item Estudiar el estado del arte de MCP, de las redes LSTM y de las GNN aplicadas a la predicción de tráfico.
+  \item Analizar, limpiar y preparar los datos de tráfico proporcionados por la universidad, definiendo la estructura de grafo (sensores y conexiones viarias) necesaria para las GNN.
+  \item Implementar un modelo de referencia basado en LSTM y un modelo basado en GNN, y compararlos mediante métricas de error de predicción como MAE y RMSE.
+  \item Diseñar e implementar un servidor MCP en Python que exponga herramientas de consulta del estado del tráfico y de predicción, integrando los modelos entrenados.
+  \item Desarrollar una aplicación web con un cliente MCP que conecte un modelo de lenguaje con el servidor, de forma que sea este quien decida qué herramienta invocar.
+  \item Evaluar el sistema completo, tanto la calidad de las predicciones como el comportamiento de las respuestas a preguntas representativas de los usuarios.
+\end{itemize}
+
+\section{Objetivos de gestión y documentación}
+
+\begin{itemize}
+  \item Aplicar una metodología ágil con iteraciones (\textit{sprints}) de dos semanas, con objetivos revisados al final de cada una.
+  \item Mantener el trabajo documentado y versionado en un repositorio de GitHub, con \textit{issues} y \textit{milestones} asociados a cada iteración.
+  \item Elaborar la memoria del proyecto de forma continua durante el desarrollo, recogiendo las decisiones de diseño y los resultados.
+\end{itemize}

@@ -1,0 +1,14 @@
+[project]
+name = "renfe-mcp-server"
+version = "0.1.0"
+description = "MCP Server for Renfe Cercanías train schedules in Spain"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.3.0",
+    "httpx>=0.28.1",
+    "beautifulsoup4>=4.12.3"
+]
+
+[project.scripts]
+renfe-mcp-server = "server:main"

@@ -16,3 +16,18 @@
 # ---------- Editor / sistema ----------
 .DS_Store
 Thumbs.db
+
+# ---------- src --------------
+.vscode
+live.main.tex
+*.sh
+.venv/
+__pycache__/
+*.pyc
+*.zip
+gtfs/
+*.egg-info/
+
+# ---------- Secretos (claves de API) ----------
+.env
+*.key
